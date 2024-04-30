@@ -1,5 +1,6 @@
 #include <SDL.h>
-
+#include "SDL_image.h"
+#include <iostream>
 int main(int argc, char* args []) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -16,10 +17,17 @@ int main(int argc, char* args []) {
         SDL_Quit();
         return 1;
     }
+    // CODE POUR LOAD UNE IMAGE EN BACKGROUND !
+    SDL_Surface* image = IMG_Load("../resources/background_space_1.png");
+    if(!image)
+    {
+        printf("Erreur de chargement de l'image : %s",SDL_GetError());
+        return -1;
+    }
+    SDL_Texture* monImage = SDL_CreateTextureFromSurface(renderer,image);  //La texture monImage contient maintenant l'image importée
+    SDL_RenderCopy(renderer, monImage, NULL, NULL);
 
-
-    SDL_SetRenderDrawColor(renderer, 100, 100, 180, 255); // Set the background color to purple
-    SDL_RenderClear(renderer);
+    // Update the screen
     SDL_RenderPresent(renderer);
 
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set the background color to purple
@@ -39,11 +47,7 @@ int main(int argc, char* args []) {
             if (event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_UP){
                 i++;
 
-                SDL_SetRenderDrawColor(renderer, 100, 100, 180, 255); // Set the background color to purple
-                SDL_RenderClear(renderer);
-                SDL_RenderPresent(renderer);
 
-                SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255); // Set the background color to purple
                 SDL_Rect rect = {100+i, 100, 200, 150}; // x, y, width, height
 
                 // Draw the rectangle
@@ -63,6 +67,7 @@ int main(int argc, char* args []) {
 
     }
 
+    SDL_FreeSurface(image);
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
