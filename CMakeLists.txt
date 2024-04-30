@@ -4,7 +4,13 @@ project(SpaceHunter)
 set(CMAKE_CXX_STANDARD 17)
 
 # Must set the path to the main.cpp, for example: scripts/main.cpp if it is inside a folder
-add_executable(${PROJECT_NAME} scripts/main.cpp)
+add_executable(${PROJECT_NAME} scripts/main.cpp
+        scripts/Utilities/Character.cpp
+        scripts/Utilities/Character.hpp
+        scripts/Player/Player.cpp
+        scripts/Player/Player.hpp
+        scripts/Background/Background.cpp
+        scripts/Background/Background.hpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
