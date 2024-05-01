@@ -7,25 +7,34 @@
 #include <SDL.h>
 #include "SDL_image.h"
 #include <iostream>
+#include <vector>
+
 class Character {
 private:
     int health;
     int damage;
     int shield;
-    SDL_Texture* texture;
+
+    int current_frame;
+
+    std::vector<SDL_Texture*> texture;
 
     SDL_Rect position{};
 
 public:
-    Character(int _health, int _damage, int _shield, SDL_Renderer* renderer, const char* image_path) : health(_health), damage(_damage), shield(_shield){
+    Character(int _health, int _damage, int _shield, SDL_Renderer* renderer, std::string image) : health(_health), damage(_damage), shield(_shield), current_frame(0){
 
-        SDL_Surface* image = IMG_Load(image_path);
-        if(!image)
-        {
-            printf("Erreur de chargement de l'image : %s",SDL_GetError());
+        for (int i = 1; i < 5; ++i) {
+            std::string filename = "../resources/" + image + "_0" + std::to_string(i) + ".png";
+
+            SDL_Surface* image = IMG_Load(filename.c_str());
+            if(!image)
+            {
+                printf("Erreur de chargement de l'image : %s",SDL_GetError());
+            }
+            texture.push_back(SDL_CreateTextureFromSurface(renderer,image));
+            SDL_FreeSurface(image);
         }
-        texture = SDL_CreateTextureFromSurface(renderer,image);
-        SDL_FreeSurface(image);
 
         position.x = 100;
         position.y = 100;
@@ -35,6 +44,7 @@ public:
 
     }
     void Render(SDL_Renderer* renderer);
+    void Animate();
     void SetNewPositionX(int _delta);
     void SetNewPositionY(int _delta);
 

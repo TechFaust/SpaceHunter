@@ -21,14 +21,13 @@ int main(int argc, char* args []) {
         return 1;
     }
 
-
     Background background(renderer,"../resources/background_space_1.png");
 
-
-    Player player(100,10,10,renderer,"../resources/PlayerSpaceship.png");
+    Player player(100,10,10,renderer,"PlayerSpaceship");
 
     bool running = true;
     SDL_Event event;
+    int frame_count = 0;
 
     while (running) {
         // Close window with any input
@@ -43,10 +42,18 @@ int main(int argc, char* args []) {
             }
         }
 
+        frame_count++;
+        if(frame_count > 1000){
+            player.Animate();
+            frame_count = 0;
+        }
+
+
         SDL_RenderClear(renderer);
         background.RedrawBackground(renderer);
         player.Render(renderer);
         SDL_RenderPresent(renderer);
+
 
     }
 
