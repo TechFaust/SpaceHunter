@@ -25,6 +25,8 @@ int main(int argc, char* args []) {
 
     Player player(100,10,10,renderer,"PlayerSpaceship");
 
+    //Bullet bullet(10,10,150,100,renderer,"Laser");
+
     bool running = true;
     SDL_Event event;
     int frame_count = 0;
@@ -33,7 +35,7 @@ int main(int argc, char* args []) {
         // Close window with any input
         while (SDL_PollEvent(&event)) {
 
-            player.Action(event);
+            player.Action(event,renderer);
 
             // Press Escape to Quit
             if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)|| event.type == SDL_QUIT) {
@@ -42,9 +44,24 @@ int main(int argc, char* args []) {
             }
         }
 
+
+        // Remove bullets that are out of the screen
+        for (auto it = player.GetBullets().begin(); it != player.GetBullets().end(); /* no increment here */) {
+            if (it->GetPosition().y < 0) { // assuming 0 is the top of the screen
+                it = player.GetBullets().erase(it);
+            } else {
+                ++it;
+            }
+        }
+
+
         frame_count++;
         if(frame_count > 1000){
             player.Animate();
+            for(auto &bullet : player.GetBullets()){
+                bullet.Move();
+                bullet.Animate();
+            }
             frame_count = 0;
         }
 
@@ -52,6 +69,9 @@ int main(int argc, char* args []) {
         SDL_RenderClear(renderer);
         background.RedrawBackground(renderer);
         player.Render(renderer);
+        for(auto &bullet : player.GetBullets()){
+            bullet.Render(renderer);
+        }
         SDL_RenderPresent(renderer);
 
 

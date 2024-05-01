@@ -22,10 +22,10 @@ private:
     SDL_Rect position{};
 
 public:
-    Character(int _health, int _damage, int _shield, SDL_Renderer* renderer, std::string image) : health(_health), damage(_damage), shield(_shield), current_frame(0){
+    Character(int _health, int _damage, int _shield, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), shield(_shield), current_frame(0){
 
         for (int i = 1; i < 5; ++i) {
-            std::string filename = "../resources/" + image + "_0" + std::to_string(i) + ".png";
+            std::string filename = "../resources/" + image_ref + "_0" + std::to_string(i) + ".png";
 
             SDL_Surface* image = IMG_Load(filename.c_str());
             if(!image)
@@ -47,6 +47,7 @@ public:
     void Animate();
     void SetNewPositionX(int _delta);
     void SetNewPositionY(int _delta);
+    SDL_Rect GetPosition();
 
 };
 

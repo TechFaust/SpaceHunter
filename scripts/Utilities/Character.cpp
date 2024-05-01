@@ -19,3 +19,7 @@ void Character::SetNewPositionY(int _delta) {
 void Character::Animate() {
     this->current_frame = (current_frame + 1) % texture.size();
 }
+
+SDL_Rect Character::GetPosition() {
+    return position;
+}

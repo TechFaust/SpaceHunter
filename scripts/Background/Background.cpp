@@ -5,5 +5,5 @@
 #include "Background.hpp"
 
 void Background::RedrawBackground(SDL_Renderer* renderer) {
-    SDL_RenderCopy(renderer, background_texture, NULL, NULL);
+    SDL_RenderCopy(renderer, background_texture, nullptr, nullptr);
 }

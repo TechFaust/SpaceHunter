@@ -10,7 +10,9 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Player/Player.cpp
         scripts/Player/Player.hpp
         scripts/Background/Background.cpp
-        scripts/Background/Background.hpp)
+        scripts/Background/Background.hpp
+        scripts/Player/Bullet.cpp
+        scripts/Player/Bullet.hpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
