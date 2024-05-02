@@ -2,30 +2,19 @@
 #include "SDL_image.h"
 #include "Player/Player.hpp"
 #include "Background/Background.hpp"
+#include "Utilities/SDL_Wrapper.hpp"
 #include <iostream>
+#include <memory>
+using std::make_unique;
 
 int main(int argc, char* args []) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
-    SDL_Window* window = SDL_CreateWindow("SpaceHunter - C++ Project", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-    if (window == nullptr) {
-        SDL_Log("Failed to create window: %s", SDL_GetError());
-        return 1;
-    }
+    auto Wrapper = make_unique<SDL_Wrapper>(800, 600, "SpaceHunter - C++ Project");
 
-    SDL_Renderer* renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
-    if (renderer == nullptr) {
-        SDL_Log("Failed to create renderer: %s", SDL_GetError());
-        SDL_DestroyWindow(window);
-        SDL_Quit();
-        return 1;
-    }
+    Background background(Wrapper->getRenderer(),"../resources/background_space_1.png");
 
-    Background background(renderer,"../resources/background_space_1.png");
-
-    Player player(100,10,10,renderer,"PlayerSpaceship");
-
-    //Bullet bullet(10,10,150,100,renderer,"Laser");
+    Player player(100,10,10,Wrapper->getRenderer(),"PlayerSpaceship");
 
     bool running = true;
     SDL_Event event;
@@ -35,7 +24,7 @@ int main(int argc, char* args []) {
         // Close window with any input
         while (SDL_PollEvent(&event)) {
 
-            player.Action(event,renderer);
+            player.Action(event,Wrapper->getRenderer());
 
             // Press Escape to Quit
             if ((event.type == SDL_KEYDOWN && event.key.keysym.sym == SDLK_ESCAPE)|| event.type == SDL_QUIT) {
@@ -66,20 +55,18 @@ int main(int argc, char* args []) {
         }
 
 
-        SDL_RenderClear(renderer);
-        background.RedrawBackground(renderer);
-        player.Render(renderer);
+        SDL_RenderClear(Wrapper->getRenderer());
+        background.RedrawBackground(Wrapper->getRenderer());
+        player.Render(Wrapper->getRenderer());
         for(auto &bullet : player.GetBullets()){
-            bullet.Render(renderer);
+            bullet.Render(Wrapper->getRenderer());
         }
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(Wrapper->getRenderer());
 
 
     }
 
-    
-    SDL_DestroyRenderer(renderer);
-    SDL_DestroyWindow(window);
+
     SDL_Quit();
     return 0;
 }
