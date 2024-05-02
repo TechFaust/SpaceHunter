@@ -6,6 +6,8 @@
 #include "Enemy/Enemy.hpp"
 #include <iostream>
 #include <memory>
+#include "SDL_ttf.h"
+
 using std::make_unique;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
