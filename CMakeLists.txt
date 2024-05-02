@@ -12,7 +12,13 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Background/Background.cpp
         scripts/Background/Background.hpp
         scripts/Player/Bullet.cpp
-        scripts/Player/Bullet.hpp)
+        scripts/Player/Bullet.hpp
+        scripts/Menu/Menu.cpp
+        scripts/Menu/Menu.hpp
+        scripts/Menu/Menu.cpp
+        scripts/Menu/Menu.hpp
+        scripts/Utilities/SDL_Wrapper.cpp
+        scripts/Utilities/SDL_Wrapper.hpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
