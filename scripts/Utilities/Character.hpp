@@ -19,13 +19,14 @@ private:
     int shield;
     STATE state;
     int current_frame;
+    int delay;
 
     std::vector<SDL_Texture*> texture;
 
     SDL_Rect position{};
 
 public:
-    Character(int _health, int _damage, int _shield, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), shield(_shield), current_frame(0){
+    Character(int _health, int _damage, int _shield, int _delay, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), shield(_shield), delay(_delay),current_frame(0){
 
         for (int i = 1; i < 5; ++i) {
             std::string filename = "../resources/" + image_ref + "_0" + std::to_string(i) + ".png";
@@ -43,7 +44,7 @@ public:
             position.x = 350;
             position.y = 500;
         } else{
-            position.x = rand() % 800 + 1;
+            position.x = rand() % 581 + 110; // rand() % (690 - 110 + 1) + 110
             position.y = 50;
         }
         position.h = 50;
@@ -57,9 +58,19 @@ public:
     void SetNewPositionX(int _delta);
     void SetNewPositionY(int _delta);
 
-    void IsAttacked(int _damage);
+    [[nodiscard]] int GetHealth() const;
+    [[nodiscard]] int GetDamage() const;
+
+    [[nodiscard]] int GetDelay() const;
+    void SetDelay(int _delay);
+    void ReduceDelay(int _delta);
+
+    virtual void IsAttacked(int _damage);
 
     STATE GetState();
+    void SetState(STATE _state);
+
+    void SetHealth(int _health);
 
     SDL_Rect GetPosition();
 

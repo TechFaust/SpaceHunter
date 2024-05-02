@@ -40,7 +40,7 @@ public:
     void Animate();
     void Render(SDL_Renderer* renderer);
 
-    int GetDamage();
+    [[nodiscard]] int GetDamage() const;
 
     SDL_Rect GetPosition();
 };

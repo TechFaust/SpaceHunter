@@ -20,6 +20,6 @@ void Bullet::Animate() {
     current_frame = (current_frame + 1) % texture.size();
 }
 
-int Bullet::GetDamage() {
+int Bullet::GetDamage() const {
     return damage;
 }

@@ -6,7 +6,7 @@
 
 
 void Enemy::Move_Enemy() {
-    SetNewPositionY(5);
+    SetNewPositionY(30);
     switch (rand() % 2) {
         case 0:
             SetNewPositionX(5);
@@ -17,6 +17,8 @@ void Enemy::Move_Enemy() {
     }
 }
 
-void Enemy::Shoot_Enemy(SDL_Renderer *renderer) {
-    bullets_enemy.emplace_back(5,-10,GetPosition().x+20,GetPosition().y-5,renderer,"Laser");
+void Enemy::Shoot_Enemy(SDL_Renderer *renderer) {}
+
+std::vector<Bullet> &Enemy::GetBullets_Enemy() {
+    return bullets_enemy;
 }
