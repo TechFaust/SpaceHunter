@@ -14,7 +14,9 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Player/Bullet.cpp
         scripts/Player/Bullet.hpp
         scripts/Utilities/SDL_Wrapper.cpp
-        scripts/Utilities/SDL_Wrapper.hpp)
+        scripts/Utilities/SDL_Wrapper.hpp
+        scripts/Enemy/Enemy.cpp
+        scripts/Enemy/Enemy.hpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)

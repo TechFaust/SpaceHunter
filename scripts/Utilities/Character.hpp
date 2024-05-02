@@ -8,13 +8,16 @@
 #include "SDL_image.h"
 #include <iostream>
 #include <vector>
+typedef enum {
+    ALIVE, DEAD
+}STATE;
 
 class Character {
 private:
     int health;
     int damage;
     int shield;
-
+    STATE state;
     int current_frame;
 
     std::vector<SDL_Texture*> texture;
@@ -36,17 +39,28 @@ public:
             SDL_FreeSurface(image);
         }
 
-        position.x = 100;
-        position.y = 100;
+        if(image_ref == "PlayerSpaceship"){
+            position.x = 350;
+            position.y = 500;
+        } else{
+            position.x = rand() % 800 + 1;
+            position.y = 50;
+        }
         position.h = 50;
         position.w = 50;
 
+        state = ALIVE;
 
     }
     void Render(SDL_Renderer* renderer);
     void Animate();
     void SetNewPositionX(int _delta);
     void SetNewPositionY(int _delta);
+
+    void IsAttacked(int _damage);
+
+    STATE GetState();
+
     SDL_Rect GetPosition();
 
 };

@@ -22,7 +22,7 @@ public:
         background_texture = SDL_CreateTextureFromSurface(renderer,image);
         SDL_FreeSurface(image);
 
-        SDL_RenderCopy(renderer, background_texture, NULL, NULL);
+        SDL_RenderCopy(renderer, background_texture, nullptr, nullptr);
     }
 
     ~Background(){

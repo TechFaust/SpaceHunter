@@ -29,11 +29,19 @@ void Player::Action(SDL_Event &event, SDL_Renderer* renderer){
 }
 
 void Player::Shoot(SDL_Renderer *renderer) {
-    bullets.emplace_back(10,10,GetPosition().x+20,GetPosition().y-5,renderer,"Laser");
+    bullets.emplace_back(5,10,GetPosition().x+20,GetPosition().y-5,renderer,"Laser");
 }
 
 std::vector<Bullet>& Player::GetBullets() {
     return bullets;
+}
+
+void Player::Add_Score(int _score) {
+    score += _score;
+}
+
+int Player::GetScore() {
+    return score;
 }
 
 

@@ -19,3 +19,7 @@ SDL_Rect Bullet::GetPosition() {
 void Bullet::Animate() {
     current_frame = (current_frame + 1) % texture.size();
 }
+
+int Bullet::GetDamage() {
+    return damage;
+}

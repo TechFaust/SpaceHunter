@@ -39,6 +39,9 @@ public:
     void Move();
     void Animate();
     void Render(SDL_Renderer* renderer);
+
+    int GetDamage();
+
     SDL_Rect GetPosition();
 };
 
