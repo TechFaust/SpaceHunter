@@ -18,4 +18,7 @@ std::vector<Bullet> &Enemy::GetBullets_Enemy() {
  */
 void Enemy::IsAttacked(int _damage) {
     SetHealth(GetHealth() - _damage);
+    if(GetHealth() <= 0){
+        SetState(DEAD);
+    }
 }
