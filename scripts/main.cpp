@@ -39,7 +39,7 @@ int main(int argc, char* args []) {
 
     std::vector<std::unique_ptr<Enemy>> enemies;
 
-    Mix_VolumeMusic(MIX_MAX_VOLUME / 3);
+    Mix_VolumeMusic(MIX_MAX_VOLUME / 10);
 
     bool running = true;
     SDL_Event event;
