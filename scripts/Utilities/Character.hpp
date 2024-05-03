@@ -16,7 +16,7 @@ class Character {
 private:
     int health;
     int damage;
-    int shield;
+
     STATE state;
     int current_frame;
     int delay;
@@ -26,7 +26,7 @@ private:
     SDL_Rect position{};
 
 public:
-    Character(int _health, int _damage, int _shield, int _delay, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), shield(_shield), delay(_delay),current_frame(0){
+    Character(int _health, int _damage, int _delay, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), delay(_delay),current_frame(0){
 
         for (int i = 1; i < 5; ++i) {
             std::string filename = "../resources/" + image_ref + "_0" + std::to_string(i) + ".png";
@@ -65,7 +65,7 @@ public:
     void SetDelay(int _delay);
     void ReduceDelay(int _delta);
 
-    virtual void IsAttacked(int _damage);
+    virtual void IsAttacked(int _damage) = 0;
 
     STATE GetState();
     void SetState(STATE _state);

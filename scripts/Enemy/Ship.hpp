@@ -13,8 +13,8 @@ private:
 
 public:
 
-    Ship(int _health, int _damage, int _shield, int _delay,SDL_Renderer* renderer, const char* image_path) :
-    Enemy(_health,_damage,_shield,_delay,renderer,image_path){};
+    Ship(int _health, int _damage, int _delay,SDL_Renderer* renderer, const char* image_path) :
+    Enemy(_health,_damage,_delay,renderer,image_path){};
 
 void Move_Enemy() override;
 void Shoot_Enemy(SDL_Renderer *renderer) override;

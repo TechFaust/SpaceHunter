@@ -114,4 +114,24 @@ void Player::Upgrade() {
     }
 }
 
+void Player::IsAttacked(int _damage) {
+    if(shield > 0){
+        shield -= _damage;
+        if(shield < 0){
+            int temp_health = GetHealth();
+            temp_health += shield;
+            SetHealth(temp_health);
+            shield = 0;
+        }
+    } else{
+        int temp_health = GetHealth();
+        temp_health -= _damage;
+        SetHealth(temp_health);
+    }
+
+    if(GetHealth() <= 0){
+        SetState(DEAD);
+    }
+}
+
 

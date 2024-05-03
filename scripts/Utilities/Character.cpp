@@ -35,19 +35,7 @@ SDL_Rect Character::GetPosition() {
 }
 
 void Character::IsAttacked(int _damage) {
-    if(shield > 0){
-        shield -= _damage;
-        if(shield < 0){
-            health += shield;
-            shield = 0;
-        }
-    } else{
-        health -= _damage;
-    }
 
-    if(health <= 0){
-        state = DEAD;
-    }
 }
 
 STATE Character::GetState() {

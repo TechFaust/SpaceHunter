@@ -10,6 +10,8 @@
 #include "SDL_ttf.h"
 #include "Enemy/DoomShip.hpp"
 #include "Enemy/Ship.hpp"
+#include "Enemy/Meteor.hpp"
+#include "Utilities/GameManager.hpp"
 #include <vector>
 #include <SDL_mixer.h>
 
@@ -24,6 +26,8 @@ int main(int argc, char* args []) {
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
     Mix_Music* backgroundMusic = Mix_LoadMUS("../resources/music/MenuTheme.ogg");
     Mix_Music* gameMusic = Mix_LoadMUS("../resources/music/LevelTheme.ogg");
+
+    GameManager gameManager;
 
     auto Wrapper = make_unique<SDL_Wrapper>(800, 600, "SpaceHunter - C++ Project");
 
@@ -70,81 +74,12 @@ int main(int argc, char* args []) {
                 background_music_on = true;
             }
 
-            // Remove bullets that are out of the screen
-            for (auto it = player.GetBullets().begin(); it != player.GetBullets().end(); /* no increment here */) {
-                if (it->GetPosition().y < 0) { // assuming 0 is the top of the screen
-                    it = player.GetBullets().erase(it);
-                } else {
-                    ++it;
-                }
-            }
 
-
-
-            // Remove enemies that are out of the screen
-            for (auto it = enemies.begin(); it != enemies.end(); /* no increment here */) {
-                if ((*it)->GetPosition().y >= 580) {
-                    it = enemies.erase(it);
-                } else {
-                    ++it;
-                }
-            }
-
-
-            // Collision between enemy bullets and player and remove bullets that are out of the screen
-            for (auto& enemy : enemies) {
-                for (auto it = (*enemy).GetBullets_Enemy().begin(); it != (*enemy).GetBullets_Enemy().end(); /* no increment here */) {
-
-
-
-                    if (it->GetPosition().y > 600) { // assuming 600 is the bottom of the screen
-                        it = (*enemy).GetBullets_Enemy().erase(it);
-                    } else if (checkCollision(player.GetPosition(), it->GetPosition())) {
-                        player.IsAttacked(it->GetDamage());
-                        it = (*enemy).GetBullets_Enemy().erase(it);
-                    } else {
-                        ++it;
-                    }
-                }
-            }
-
-
-
-            // Collision between bullets and enemies
-            for (auto bullet_it = player.GetBullets().begin();
-                 bullet_it != player.GetBullets().end(); /* no increment here */) {
-                for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); /* no increment here */) {
-                    if (checkCollision(bullet_it->GetPosition(), (*enemy_it)->GetPosition())) {
-
-                        (*enemy_it)->IsAttacked(bullet_it->GetDamage());
-                        if ((*enemy_it)->GetState() == DEAD) {
-                            enemy_it = enemies.erase(enemy_it);
-                            player.Add_Score(5);
-                        }
-
-                        bullet_it = player.GetBullets().erase(bullet_it);
-                        player.Add_Score(2);
-
-                        break;
-                    } else {
-                        ++enemy_it;
-                    }
-                }
-                if (bullet_it != player.GetBullets().end()) {
-                    ++bullet_it;
-                }
-            }
-
-            // Collision between player and enemies
-            for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); /* no increment here */) {
-                if (checkCollision(player.GetPosition(), (*enemy_it)->GetPosition())) {
-                    player.IsAttacked((*enemy_it)->GetDamage());
-                    enemy_it = enemies.erase(enemy_it);
-                    player.Add_Score(1);
-                } else {
-                    ++enemy_it;
-                }
-            }
+            gameManager.checkBulletEnemyCollision(player, enemies);
+            gameManager.checkPlayerEnemyCollision(player, enemies);
+            gameManager.removeBulletsOutOfScreen(player);
+            gameManager.removeEnemiesOutOfScreen(enemies);
+            gameManager.checkEnemyBulletPlayerCollision(player, enemies);
 
 
 
@@ -155,13 +90,13 @@ int main(int argc, char* args []) {
                 if(enemies.size() < 10) {
                     switch (rand() % 4) {
                         case 0:
-                            enemies.emplace_back(std::make_unique<Enemy>(10, 10, 0, 20, Wrapper->getRenderer(), "Meteor"));
+                            enemies.emplace_back(std::make_unique<Meteor>(10, 10, 0, Wrapper->getRenderer(), "Meteor"));
                             break;
                         case 1:
-                            enemies.emplace_back(std::make_unique<Ship>(10, 10, 0, 25, Wrapper->getRenderer(), "EnemyShip"));
+                            enemies.emplace_back(std::make_unique<Ship>(10, 10, 20, Wrapper->getRenderer(), "EnemyShip"));
                             break;
                         case 2:
-                            enemies.emplace_back(std::make_unique<DoomShip>(20, 10, 10, 35, Wrapper->getRenderer(), "EnemyDoomShip"));
+                            enemies.emplace_back(std::make_unique<DoomShip>(20, 10, 35, Wrapper->getRenderer(), "EnemyDoomShip"));
                             break;
                     }
                     spawn_frame = 0;
@@ -237,44 +172,4 @@ int main(int argc, char* args []) {
     TTF_Quit();
     SDL_Quit();
     return 0;
-}
-
-bool checkCollision(SDL_Rect a, SDL_Rect b) {
-    // The sides of the rectangles
-    int leftA, leftB;
-    int rightA, rightB;
-    int topA, topB;
-    int bottomA, bottomB;
-
-    // Calculate the sides of rect A
-    leftA = a.x;
-    rightA = a.x + a.w;
-    topA = a.y;
-    bottomA = a.y + a.h;
-
-    // Calculate the sides of rect B
-    leftB = b.x;
-    rightB = b.x + b.w;
-    topB = b.y;
-    bottomB = b.y + b.h;
-
-    // If any of the sides from A are outside of B
-    if (bottomA <= topB) {
-        return false;
-    }
-
-    if (topA >= bottomB) {
-        return false;
-    }
-
-    if (rightA <= leftB) {
-        return false;
-    }
-
-    if (leftA >= rightB) {
-        return false;
-    }
-
-    // If none of the sides from A are outside B
-    return true;
 }

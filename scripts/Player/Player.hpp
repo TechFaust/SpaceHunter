@@ -19,12 +19,14 @@ private:
     int score;
     bool upgrade = false;
 
+    int shield;
+
     SDL_Rect healthBarBackground;
     SDL_Rect healthBar;
 
 public:
     Player(int _health, int _damage, int _shield,int _delay, SDL_Renderer* renderer, const char* image_path) :
-    Character(_health,_damage,_shield,_delay,renderer,image_path), score(0){
+    Character(_health,_damage,_delay,renderer,image_path), score(0), shield(_shield){
         // Initialize health bar background
         healthBarBackground.x = 0;
         healthBarBackground.y = 580;  // 10 pixels above the character
@@ -46,8 +48,10 @@ public:
     void RenderHealthBar(SDL_Renderer* renderer);
     void RenderScore(SDL_Renderer* renderer, TTF_Font* font);
 
+    void IsAttacked(int _damage) override;
+
     void SetUpgrade(bool _upgrade);
-    bool GetUpgrade() const;
+    [[nodiscard]] bool GetUpgrade() const;
     void SetScore(int _score);
     void Upgrade();
 

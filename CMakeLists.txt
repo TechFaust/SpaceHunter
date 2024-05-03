@@ -21,7 +21,11 @@ add_executable(${PROJECT_NAME} scripts/main.cpp
         scripts/Enemy/DoomShip.cpp
         scripts/Enemy/DoomShip.hpp
         scripts/Enemy/Ship.cpp
-        scripts/Enemy/Ship.hpp)
+        scripts/Enemy/Ship.hpp
+        scripts/Enemy/Meteor.cpp
+        scripts/Enemy/Meteor.hpp
+        scripts/Utilities/GameManager.cpp
+        scripts/Utilities/GameManager.hpp)
 
 # --- SDL2 SETUP ---
 set(CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/modules)
