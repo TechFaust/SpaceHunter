@@ -1,8 +1,15 @@
 //
-// Created by Logan on 02/05/2024.
+// Created by Groupe_2_Space_Hunter on 02/05/2024.
 //
 
 #include "Menu.hpp"
+
+/**
+ * @brief Constructeur du menu
+ * @param renderer Moteur Graphique
+ * @param _gameStarted Booléen pour savoir si le jeu a démarré
+ * @param _quitGame Boléen pour savoir si le jeu doit quitter
+ */
 Menu::Menu(SDL_Renderer* renderer, bool _gameStarted, bool _quitGame) : gameStarted(_gameStarted), quitGame(_quitGame){
     // Load the images for the title, start button, and quit button
     title = IMG_LoadTexture(renderer, "../resources/title.png");
@@ -10,6 +17,10 @@ Menu::Menu(SDL_Renderer* renderer, bool _gameStarted, bool _quitGame) : gameStar
     quitButton = IMG_LoadTexture(renderer, "../resources/quit_button.png");
 }
 
+/**
+ * @brief Gestion des événements du menu (gestion des clics)
+ * @param e Evenement
+ */
 void Menu::handleEvent(SDL_Event& e) {
     if (e.type == SDL_MOUSEBUTTONDOWN) {
         int x, y;
@@ -30,6 +41,10 @@ void Menu::handleEvent(SDL_Event& e) {
     }
 }
 
+/**
+ * @brief Affichage du menu (boutons & titre)
+ * @param renderer Moteur Graphique
+ */
 void Menu::render(SDL_Renderer* renderer) {
     // Render the title, start button, and quit button
     // You'll need to replace these SDL_Rects with the actual position and size of your title, start button, and quit button
@@ -42,18 +57,32 @@ void Menu::render(SDL_Renderer* renderer) {
     SDL_RenderCopy(renderer, quitButton, NULL, &quitButtonRect);
 }
 
+/**
+ * @brief Getter pour savoir si le jeu a démarré
+ */
 bool Menu::GetGameStarted() const {
     return gameStarted;
 }
 
+/**
+ * @brief Getter pour savoir si le jeu doit quitter
+ */
 bool Menu::GetQuitGame() const {
     return quitGame;
 }
 
+/**
+ * @brief Setter pour changer l'état booléen quand le jeu doit quitter
+ * @param _quitGame
+ */
 void Menu::SetQuitGame(bool _quitGame) {
     quitGame = _quitGame;
 }
 
+/**
+ * @brief Setter pour changer l'état booléen quand le jeu a démarré
+ * @param _gameStarted
+ */
 void Menu::SetGameStarted(bool _gameStarted) {
     gameStarted = _gameStarted;
 }

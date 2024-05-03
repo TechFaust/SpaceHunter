@@ -1,9 +1,15 @@
 //
-// Created by Logan on 03/05/2024.
+// Created by Groupe_2_Space_Hunter on 03/05/2024.
 //
 
 #include "GameManager.hpp"
 
+/**
+ * @brief Fonction qui vérifie si deux objets se touchent
+ * @param a Notre premier objet
+ * @param b Notre second objet
+ * @return Vrai si les deux objets se touchent, faux sinon
+ */
 bool GameManager::check_collision(SDL_Rect a, SDL_Rect b) {
     // The sides of the rectangles
     int leftA, leftB;
@@ -44,6 +50,11 @@ bool GameManager::check_collision(SDL_Rect a, SDL_Rect b) {
     return true;
 }
 
+/**
+ * @brief Fonction qui vérifie si le joueur touche un ennemi
+ * @param player Notre joueur
+ * @param enemies Nos ennemis
+ */
 void GameManager::checkPlayerEnemyCollision(Player &player, std::vector<std::unique_ptr<Enemy>> &enemies) {
     for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); /* no increment here */) {
         if (check_collision(player.GetPosition(), (*enemy_it)->GetPosition())) {
@@ -56,6 +67,11 @@ void GameManager::checkPlayerEnemyCollision(Player &player, std::vector<std::uni
     }
 }
 
+/**
+ * @brief Fonction qui vérifie si un projectile joueur touche un ennemi
+ * @param player Notre joueur (les bullets sont en attribut)
+ * @param enemies Nos ennemis
+ */
 void GameManager::checkBulletEnemyCollision(Player &player, std::vector<std::unique_ptr<Enemy>> &enemies) {
     for (auto bullet_it = player.GetBullets().begin();
          bullet_it != player.GetBullets().end(); /* no increment here */) {
@@ -83,6 +99,11 @@ void GameManager::checkBulletEnemyCollision(Player &player, std::vector<std::uni
 
 }
 
+/**
+ * @brief Fonction qui vérifie si un projectile ennemi touche le joueur OU s'ils sont hors de l'écran
+ * @param player Notre joueur
+ * @param enemies Nos ennemis (les bullets sont en attribut)
+ */
 void GameManager::checkEnemyBulletPlayerCollision(Player &player, std::vector<std::unique_ptr<Enemy>> &enemies) {
     for (auto& enemy : enemies) {
         for (auto it = (*enemy).GetBullets_Enemy().begin(); it != (*enemy).GetBullets_Enemy().end(); /* no increment here */) {
@@ -98,6 +119,10 @@ void GameManager::checkEnemyBulletPlayerCollision(Player &player, std::vector<st
     }
 }
 
+/**
+ * @brief Fonction qui supprime les projectiles joueurs qui sortent de l'écran
+ * @param player Notre joueur
+ */
 void GameManager::removeBulletsOutOfScreen(Player &player) {
     for (auto it = player.GetBullets().begin(); it != player.GetBullets().end(); /* no increment here */) {
         if (it->GetPosition().y < 0) { // assuming 0 is the top of the screen
@@ -108,6 +133,10 @@ void GameManager::removeBulletsOutOfScreen(Player &player) {
     }
 }
 
+/**
+ * @brief Fonction qui supprime les ennemis qui sortent de l'écran
+ * @param enemies Nos ennemis
+ */
 void GameManager::removeEnemiesOutOfScreen(std::vector<std::unique_ptr<Enemy>> &enemies) {
     for (auto it = enemies.begin(); it != enemies.end(); /* no increment here */) {
         if ((*it)->GetPosition().y >= 580) {

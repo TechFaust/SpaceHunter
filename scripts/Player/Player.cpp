@@ -1,9 +1,14 @@
 //
-// Created by Logan on 30/04/2024.
+// Created by Groupe_2_Space_Hunter on 30/04/2024.
 //
 
 #include "Player.hpp"
 
+/**
+ * @brief Prise en charge des évènements joueur
+ * @param event Evenements
+ * @param renderer Moteur de rendu
+ */
 void Player::Action(SDL_Event &event, SDL_Renderer* renderer){
     if (event.type == SDL_KEYDOWN) {
         switch (event.key.keysym.sym) {
@@ -28,6 +33,10 @@ void Player::Action(SDL_Event &event, SDL_Renderer* renderer){
     }
 }
 
+/**
+ * @brief Tir du joueur
+ * @param renderer
+ */
 void Player::Shoot(SDL_Renderer *renderer) {
 
    if(GetDelay() <= 0 && GetUpgrade()) {
@@ -41,26 +50,51 @@ void Player::Shoot(SDL_Renderer *renderer) {
 
    }
 
+   /**
+    * @brief Récupération des balles du joueur
+    * @return Les balles du joueurs
+    */
+
 std::vector<Bullet>& Player::GetBullets() {
     return bullets;
 }
 
+/**
+ * @brief Ajout de score
+ * @param _score Score à ajouter
+ */
 void Player::Add_Score(int _score) {
     score += _score;
 }
 
+/**
+ * @brief Récupération du score
+ * @return Le score du joueur
+ */
 int Player::GetScore() const {
     return score;
 }
 
+/**
+ * @brief Mise à jour de l'amélioration du joueur
+ * @param _upgrade Booléen d'amélioration
+ */
 void Player::SetUpgrade(bool _upgrade) {
     upgrade = _upgrade;
 }
 
+/**
+ * @brief Mise à jour du score en dur
+ * @param _score Le score en dur
+ */
 void Player::SetScore(int _score) {
     score = _score;
 }
 
+/**
+ * @brief Affichage de la barre de vie du joueur
+ * @param renderer Mode de rendu
+ */
 void Player::RenderHealthBar(SDL_Renderer *renderer){
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);  // White color for background
     SDL_RenderFillRect(renderer, &healthBarBackground);
@@ -69,6 +103,11 @@ void Player::RenderHealthBar(SDL_Renderer *renderer){
     SDL_RenderFillRect(renderer, &healthBar);
 }
 
+/**
+ * @brief Affichage du score du joueur
+ * @param renderer Mode de rendu
+ * @param font Police d'écriture
+ */
 void Player::RenderScore(SDL_Renderer *renderer, TTF_Font *font) {
 
     SDL_Rect scoreRect;
@@ -104,16 +143,27 @@ void Player::RenderScore(SDL_Renderer *renderer, TTF_Font *font) {
 
 }
 
+/**
+ * @brief Récupération de l'amélioration du joueur
+ * @return Booléen d'amélioration
+ */
 bool Player::GetUpgrade() const {
     return upgrade;
 }
 
+/**
+ * @brief Unlock du double tirs du joueur en fonction de son score
+ */
 void Player::Upgrade() {
     if(score >= 250){
         upgrade = true;
     }
 }
 
+/**
+ * @brief Vérification quand le joueur est attaqué
+ * @param _damage dégats infligés par l'ennemi
+ */
 void Player::IsAttacked(int _damage) {
     if(shield > 0){
         shield -= _damage;

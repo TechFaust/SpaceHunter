@@ -1,8 +1,12 @@
 //
-// Created by Logan on 02/05/2024.
+// Created by Groupe_2_Space_Hunter on 02/05/2024.
 //
 
 #include "Ship.hpp"
+
+/**
+ * @brief Definition du comportements/mouvements de l'ennemi "Ship"
+ */
 
 void Ship::Move_Enemy() {
     SetNewPositionY(5);
@@ -15,6 +19,11 @@ void Ship::Move_Enemy() {
             break;
     }
 }
+
+/**
+* @brief Definition du comportements/tirs de l'ennemi "Ship"
+* @param renderer Moteur graphique pour afficher les tirs.
+*/
 
 void Ship::Shoot_Enemy(SDL_Renderer *renderer) {
     if(GetDelay() < 0){

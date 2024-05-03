@@ -1,5 +1,5 @@
 //
-// Created by Logan on 30/04/2024.
+// Created by Groupe_2_Space_Hunter on 30/04/2024.
 //
 
 #ifndef SPACEHUNTER_CHARACTER_HPP
@@ -12,47 +12,28 @@ typedef enum {
     ALIVE, DEAD
 }STATE;
 
+
+/**
+ * @brief Classe abstraite représentant un personnage du jeu
+ */
+
 class Character {
 private:
-    int health;
-    int damage;
 
-    STATE state;
-    int current_frame;
-    int delay;
+    int health; // Points de vie du personnage
+    int damage; // Dégâts de collision du personnage
 
-    std::vector<SDL_Texture*> texture;
+    STATE state; // Etat VIVANT OU MORT du personnage
+    int current_frame; // Frame actuelle de l'animation
+    int delay; // Délai entre chaque frame tirs
 
-    SDL_Rect position{};
+    std::vector<SDL_Texture*> texture; // Texture du personnage pour son animation
+
+    SDL_Rect position{}; // Position du personnage
 
 public:
-    Character(int _health, int _damage, int _delay, SDL_Renderer* renderer, const std::string& image_ref) : health(_health), damage(_damage), delay(_delay),current_frame(0){
 
-        for (int i = 1; i < 5; ++i) {
-            std::string filename = "../resources/" + image_ref + "_0" + std::to_string(i) + ".png";
-
-            SDL_Surface* image = IMG_Load(filename.c_str());
-            if(!image)
-            {
-                printf("Erreur de chargement de l'image : %s",SDL_GetError());
-            }
-            texture.push_back(SDL_CreateTextureFromSurface(renderer,image));
-            SDL_FreeSurface(image);
-        }
-
-        if(image_ref == "PlayerSpaceship"){
-            position.x = 350;
-            position.y = 500;
-        } else{
-            position.x = rand() % 581 + 110; // rand() % (690 - 110 + 1) + 110
-            position.y = 50;
-        }
-        position.h = 50;
-        position.w = 50;
-
-        state = ALIVE;
-
-    }
+    Character(int _health, int _damage, int _delay, SDL_Renderer* renderer, const std::string& image_ref);
     void Render(SDL_Renderer* renderer);
     void Animate();
     void SetNewPositionX(int _delta);

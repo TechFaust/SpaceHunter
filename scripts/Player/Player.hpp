@@ -1,5 +1,5 @@
 //
-// Created by Logan on 30/04/2024.
+// Created by Groupe_2_Space_Hunter on 30/04/2024.
 //
 
 #ifndef SPACEHUNTER_PLAYER_HPP
@@ -13,18 +13,31 @@
 #include "Bullet.hpp"
 #include <SDL_ttf.h>
 
+/**
+ * @class Joueur du jeu
+ */
 class Player : public Character{
 private:
-    std::vector<Bullet> bullets;
-    int score;
-    bool upgrade = false;
+    std::vector<Bullet> bullets; // Balles du joueur en jeu
+    int score; // Score du joueur
+    bool upgrade = false; // Amélioration du joueur
 
-    int shield;
+    int shield; // Bouclier du jouer (WIP - Pas de regénération pour l'instant)
 
-    SDL_Rect healthBarBackground;
-    SDL_Rect healthBar;
+    SDL_Rect healthBarBackground; // Barre de vie du joueur (fond blanc)
+    SDL_Rect healthBar; // Barre de vie du joueur (rouge)
 
 public:
+
+    /**
+     * @brief Constructeur de la classe Player
+     * @param _health Vie du joueur
+     * @param _damage Dégats du joueur
+     * @param _shield Bouclier du joueur
+     * @param _delay Délai entre chaque tir
+     * @param renderer Mode de rendu
+     * @param image_path Reférence de l'image du joueur
+     */
     Player(int _health, int _damage, int _shield,int _delay, SDL_Renderer* renderer, const char* image_path) :
     Character(_health,_damage,_delay,renderer,image_path), score(0), shield(_shield){
         // Initialize health bar background

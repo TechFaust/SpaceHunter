@@ -1,9 +1,12 @@
 //
-// Created by Logan on 03/05/2024.
+// Created by Groupe_2_Space_Hunter on 03/05/2024.
 //
 
 #include "Meteor.hpp"
 
+/**
+ * @brief Definition des methodes de la classe "Meteor" qui herite de la classe Enemy.
+ */
 void Meteor::Move_Enemy() {
 
         SetNewPositionY(30);
@@ -17,7 +20,10 @@ void Meteor::Move_Enemy() {
 
     }
 }
-
+/**
+ * @brief Definition du comportement de tir de l'ennemi "Meteor". Ici on s'attend à ce que le Meteor ne tire pas.
+ * @param renderer Moteur Graphique pour afficher les tirs
+ */
 void Meteor::Shoot_Enemy(SDL_Renderer *renderer) {
 
 }
