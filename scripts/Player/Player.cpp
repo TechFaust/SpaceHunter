@@ -29,11 +29,14 @@ void Player::Action(SDL_Event &event, SDL_Renderer* renderer){
 }
 
 void Player::Shoot(SDL_Renderer *renderer) {
-   // bullets.emplace_back(5,10,GetPosition().x+20,GetPosition().y-5,renderer,"Laser");
-   if(GetDelay() <= 0) {
+
+   if(GetDelay() <= 0 && GetUpgrade()) {
        bullets.emplace_back(5, 10, GetPosition().x + 10, GetPosition().y - 5, renderer, "Laser");
        bullets.emplace_back(5, 10, GetPosition().x + 30, GetPosition().y - 5, renderer, "Laser");
-       SetDelay(10);
+       SetDelay(5);
+   } else if(GetDelay() <= 0){
+         bullets.emplace_back(5, 10, GetPosition().x + 20, GetPosition().y - 5, renderer, "Laser");
+         SetDelay(5);
    }
 
    }
@@ -46,7 +49,7 @@ void Player::Add_Score(int _score) {
     score += _score;
 }
 
-int Player::GetScore() {
+int Player::GetScore() const {
     return score;
 }
 
@@ -99,6 +102,16 @@ void Player::RenderScore(SDL_Renderer *renderer, TTF_Font *font) {
     SDL_DestroyTexture(Message);
 
 
+}
+
+bool Player::GetUpgrade() const {
+    return upgrade;
+}
+
+void Player::Upgrade() {
+    if(score >= 250){
+        upgrade = true;
+    }
 }
 
 

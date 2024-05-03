@@ -82,4 +82,9 @@ void Character::SetHealth(int _health) {
     health = _health;
 }
 
+void Character::SetPosition(int _x, int _y) {
+    position.x = _x;
+    position.y = _y;
+}
+
 

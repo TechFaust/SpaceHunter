@@ -18,8 +18,8 @@ void DoomShip::Move_Enemy() {
 
 void DoomShip::Shoot_Enemy(SDL_Renderer *renderer) {
     if(GetDelay() < 0){
-        GetBullets_Enemy().emplace_back(5,-10,GetPosition().x+15,GetPosition().y-5,renderer,"Laser_Rose");
-        GetBullets_Enemy().emplace_back(5,-10,GetPosition().x+25,GetPosition().y-5,renderer,"Laser_Rose");
-        SetDelay(20);
+        GetBullets_Enemy().emplace_back(5,-10,GetPosition().x,GetPosition().y-5,renderer,"Laser_Rose");
+        GetBullets_Enemy().emplace_back(5,-10,GetPosition().x+20 ,GetPosition().y-5,renderer,"Laser_Rose");
+        SetDelay(35);
     }
 }

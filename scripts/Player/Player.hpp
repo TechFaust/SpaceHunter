@@ -41,13 +41,15 @@ public:
     std::vector<Bullet>& GetBullets();
 
     void Add_Score(int _score);
-    int GetScore();
+    [[nodiscard]] int GetScore() const;
 
     void RenderHealthBar(SDL_Renderer* renderer);
     void RenderScore(SDL_Renderer* renderer, TTF_Font* font);
 
     void SetUpgrade(bool _upgrade);
+    bool GetUpgrade() const;
     void SetScore(int _score);
+    void Upgrade();
 
 };
 

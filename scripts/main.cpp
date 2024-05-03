@@ -11,7 +11,8 @@
 #include "Enemy/DoomShip.hpp"
 #include "Enemy/Ship.hpp"
 #include <vector>
-// #include <SDL_mixer.h>
+#include <SDL_mixer.h>
+
 using std::make_unique;
 
 bool checkCollision(SDL_Rect a, SDL_Rect b);
@@ -20,12 +21,15 @@ int main(int argc, char* args []) {
     SDL_Init(SDL_INIT_EVERYTHING);
     TTF_Init();
     TTF_Font* font = TTF_OpenFont("../resources/font/eras-bold-bt.ttf", 24);
+    Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
+    Mix_Music* backgroundMusic = Mix_LoadMUS("../resources/music/MenuTheme.ogg");
+    Mix_Music* gameMusic = Mix_LoadMUS("../resources/music/LevelTheme.ogg");
 
     auto Wrapper = make_unique<SDL_Wrapper>(800, 600, "SpaceHunter - C++ Project");
 
     Background background(Wrapper->getRenderer(),"../resources/background_space_1.png");
 
-    Player player(100,10,10,10,Wrapper->getRenderer(),"PlayerSpaceship");
+    Player player(100,10,10,5,Wrapper->getRenderer(),"PlayerSpaceship");
 
     Menu menu(Wrapper->getRenderer(), false, false);
 
@@ -35,6 +39,8 @@ int main(int argc, char* args []) {
     SDL_Event event;
     int frame_count = 0;
     int spawn_frame = 0;
+    bool background_music_on = true;
+    bool game_music_on = false;
 
     while (running) {
 
@@ -55,6 +61,13 @@ int main(int argc, char* args []) {
         SDL_RenderClear(Wrapper->getRenderer());
 
         if(menu.GetGameStarted()) {
+
+            if(game_music_on){
+                Mix_PlayMusic(gameMusic, -1);
+                game_music_on = false;
+                background_music_on = true;
+            }
+
             // Remove bullets that are out of the screen
             for (auto it = player.GetBullets().begin(); it != player.GetBullets().end(); /* no increment here */) {
                 if (it->GetPosition().y < 0) { // assuming 0 is the top of the screen
@@ -66,17 +79,22 @@ int main(int argc, char* args []) {
 
 
 
+            // Remove enemies that are out of the screen
             for (auto it = enemies.begin(); it != enemies.end(); /* no increment here */) {
-                if ((*it)->GetPosition().y >= 580) { // assuming 600 is the bottom of the screen
+                if ((*it)->GetPosition().y >= 580) {
                     it = enemies.erase(it);
                 } else {
                     ++it;
                 }
             }
 
-            // Inside your main game loop
+
+            // Collision between enemy bullets and player and remove bullets that are out of the screen
             for (auto& enemy : enemies) {
                 for (auto it = (*enemy).GetBullets_Enemy().begin(); it != (*enemy).GetBullets_Enemy().end(); /* no increment here */) {
+
+
+
                     if (it->GetPosition().y > 600) { // assuming 600 is the bottom of the screen
                         it = (*enemy).GetBullets_Enemy().erase(it);
                     } else if (checkCollision(player.GetPosition(), it->GetPosition())) {
@@ -90,6 +108,7 @@ int main(int argc, char* args []) {
 
 
 
+            // Collision between bullets and enemies
             for (auto bullet_it = player.GetBullets().begin();
                  bullet_it != player.GetBullets().end(); /* no increment here */) {
                 for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); /* no increment here */) {
@@ -114,6 +133,7 @@ int main(int argc, char* args []) {
                 }
             }
 
+            // Collision between player and enemies
             for (auto enemy_it = enemies.begin(); enemy_it != enemies.end(); /* no increment here */) {
                 if (checkCollision(player.GetPosition(), (*enemy_it)->GetPosition())) {
                     player.IsAttacked((*enemy_it)->GetDamage());
@@ -131,17 +151,18 @@ int main(int argc, char* args []) {
             spawn_frame++;
             if (spawn_frame > 3000) {
                 if(enemies.size() < 10) {
-                    switch (rand() % 3) {
+                    switch (rand() % 4) {
                         case 0:
                             enemies.emplace_back(std::make_unique<Enemy>(10, 10, 0, 20, Wrapper->getRenderer(), "Meteor"));
                             break;
                         case 1:
-                            enemies.emplace_back(std::make_unique<Ship>(10, 10, 0, 20, Wrapper->getRenderer(), "EnemyShip"));
+                            enemies.emplace_back(std::make_unique<Ship>(10, 10, 0, 25, Wrapper->getRenderer(), "EnemyShip"));
                             break;
                         case 2:
-                            enemies.emplace_back(std::make_unique<DoomShip>(20, 10, 0, 20, Wrapper->getRenderer(), "EnemyDoomShip"));
+                            enemies.emplace_back(std::make_unique<DoomShip>(20, 10, 10, 35, Wrapper->getRenderer(), "EnemyDoomShip"));
                             break;
                     }
+                    spawn_frame = 0;
                 }
                 }
 
@@ -168,6 +189,8 @@ int main(int argc, char* args []) {
                 frame_count = 0;
             }
 
+            player.Upgrade();
+
             background.RedrawBackground(Wrapper->getRenderer());
             player.Render(Wrapper->getRenderer());
 
@@ -184,8 +207,16 @@ int main(int argc, char* args []) {
             player.RenderScore(Wrapper->getRenderer(), font);
         }
         else {
+
+            if(background_music_on){
+                Mix_PlayMusic(backgroundMusic, -1);
+                background_music_on = false;
+                game_music_on = true;
+            }
+
             background.RedrawBackground(Wrapper->getRenderer());
             menu.render(Wrapper->getRenderer());
+
         }
         if(player.GetState() == DEAD){
             menu.SetGameStarted(false);
@@ -193,6 +224,7 @@ int main(int argc, char* args []) {
             player.SetState(ALIVE);
             player.SetHealth(100);
             player.SetScore(0);
+            player.SetUpgrade(false);
             enemies.clear();
         }
         SDL_RenderPresent(Wrapper->getRenderer());

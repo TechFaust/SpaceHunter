@@ -9,10 +9,10 @@ void Enemy::Move_Enemy() {
     SetNewPositionY(30);
     switch (rand() % 2) {
         case 0:
-            SetNewPositionX(5);
+            SetNewPositionX(10);
             break;
         case 1:
-            SetNewPositionX(-5);
+            SetNewPositionX(-10);
             break;
     }
 }

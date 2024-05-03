@@ -73,6 +73,7 @@ public:
     void SetHealth(int _health);
 
     SDL_Rect GetPosition();
+    void SetPosition(int _x, int _y);
 
 };
 
