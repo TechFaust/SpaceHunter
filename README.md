@@ -1,7 +1,12 @@
 # SpaceHunter - C++ Project in SDL2
 
-Bienvenue dans le projet SpaceHunter pour le cours "Programmation Orientée Objet en C++" pour le cours de Système Embarqués et Robotique
+Bienvenue dans le projet SpaceHunter pour le cours "Programmation Orientée Objet en C++" de Système Embarqués et Robotique
 à l'ISEN Yncréa Méditerranée.
+
+# Groupe
++ GAIROARD Logan (Chef de projet et Développeur principal)
++ SIMONA Maxime (Graphiste, Sound designer et débuggeur)
++ LA-ROSA-RENCUREL Gabriel (Développeur secondaire et débuggeur)
 
 # Ressources utilisées pour le projet
 - [CLion Template for SDL2 Projects (Base du Projet)](https://github.com/llanillo/clion-cmake-sdl2-template)
